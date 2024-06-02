@@ -225,25 +225,38 @@
       let portfolioIsotope = new Isotope(portfolioContainer, {
         itemSelector: '.portfolio-item'
       });
-
+  
       let portfolioFilters = select('#portfolio-flters li', true);
-
-      on('click', '#portfolio-flters li', function(e) {
-        e.preventDefault();
-        portfolioFilters.forEach(function(el) {
-          el.classList.remove('filter-active');
-        });
-        this.classList.add('filter-active');
-
+  
+      function filterPortfolioItems(filterValue) {
         portfolioIsotope.arrange({
-          filter: this.getAttribute('data-filter')
+          filter: filterValue
         });
         portfolioIsotope.on('arrangeComplete', function() {
-          AOS.refresh()
+          AOS.refresh();
         });
-      }, true);
+      }
+  
+      portfolioFilters.forEach(filter => {
+        filter.addEventListener('click', function(e) {
+          e.preventDefault();
+          portfolioFilters.forEach(el => {
+            el.classList.remove('filter-active');
+          });
+          this.classList.add('filter-active');
+  
+          let filterValue = this.getAttribute('data-filter');
+          filterPortfolioItems(filterValue);
+        });
+      });
+      
+      // Filtrar os itens da galeria no carregamento da página
+      let activeFilter = select('#portfolio-flters li.filter-active');
+      if (activeFilter) {
+        let filterValue = activeFilter.getAttribute('data-filter');
+        filterPortfolioItems(filterValue);
+      }
     }
-
   });
 
   /**
