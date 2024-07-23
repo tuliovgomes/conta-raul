@@ -902,7 +902,7 @@ section {
 
 @media (max-width: 768px) {
   .clients img {
-    max-width: 40%;
+    max-width: 90%;
   }
 }
 
